@@ -1,6 +1,21 @@
 # depslib dependency file v1.0
-1741603272 source:d:\c++\demo\main.cpp
+1743065644 source:d:\c++\demo\main.cpp
+	"graphics.h"
+	<cstdlib>
+
+1743057275 d:\c++\demo\defs.h
 	<SDL.h>
 	<SDL_image.h>
-	<bits/stdc++.h>
+	<iostream>
+	<vector>
+	<algorithm>
+	<numeric>
+	<cmath>
+	<ctime>
+
+1743065335 source:d:\c++\demo\graphics.cpp
+	"graphics.h"
+
+1743057181 d:\c++\demo\graphics.h
+	"defs.h"
 
