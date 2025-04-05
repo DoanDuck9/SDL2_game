@@ -1,21 +1,34 @@
 # depslib dependency file v1.0
-1743065644 source:d:\c++\demo\main.cpp
+1743848869 source:d:\c++\demo\main.cpp
 	"graphics.h"
-	<cstdlib>
-
-1743057275 d:\c++\demo\defs.h
+	"board.h"
 	<SDL.h>
-	<SDL_image.h>
 	<iostream>
+
+1743849175 d:\c++\demo\defs.h
+	<SDL.h>
+	<SDL_ttf.h>
+	<SDL_image.h>
+	<string>
 	<vector>
-	<algorithm>
-	<numeric>
-	<cmath>
-	<ctime>
+	<functional>
 
-1743065335 source:d:\c++\demo\graphics.cpp
+1743851092 source:d:\c++\demo\graphics.cpp
 	"graphics.h"
+	"board.h"
+	<iostream>
+	<sstream>
+	<SDL_image.h>
 
-1743057181 d:\c++\demo\graphics.h
+1743848864 d:\c++\demo\graphics.h
+	"defs.h"
+
+1743849175 source:d:\c++\demo\board.cpp
+	"board.h"
+	<algorithm>
+	<random>
+	<sstream>
+
+1743848864 d:\c++\demo\board.h
 	"defs.h"
 

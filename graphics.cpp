@@ -1,147 +1,158 @@
 #include "graphics.h"
-void nhap(int &n)
-{
-    cout << "nhap so hang mong muon: ";
-    cin >> n;
-    while (n <= 2 || n > 10)
-    {
-        cout << "so hang nam trong khoang [3,10]: ";
-        cin >> n;
+#include "board.h"
+#include <iostream>
+#include <sstream>
+#include <SDL_image.h>
+
+using namespace std;
+
+SDL_Window* window = nullptr;
+SDL_Renderer* renderer = nullptr;
+TTF_Font* font = nullptr;
+
+Board* board = nullptr;
+
+Button* startBtn = nullptr;
+Button* settingBtn = nullptr;
+SDL_Color white = {255, 255, 255, 255};
+
+Uint32 startTime = 0;
+int stepCount = 0;
+
+SDL_Texture* restartTexture = nullptr;
+SDL_Texture* settingsTexture = nullptr;
+
+void renderText(const std::string& text, int x, int y) {
+    SDL_Surface* textSurface = TTF_RenderUTF8_Blended(font, text.c_str(), white);
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+    SDL_Rect dstRect = {x, y, textSurface->w, textSurface->h};
+    SDL_RenderCopy(renderer, textTexture, nullptr, &dstRect);
+
+    SDL_FreeSurface(textSurface);
+    SDL_DestroyTexture(textTexture);
+}
+
+Button::Button(const std::string& txt, int x, int y, TTF_Font* f, SDL_Color c, std::function<void()> click) {
+    text = txt;
+    font = f;
+    color = c;
+    onClick = click;
+    SDL_Surface* surf = TTF_RenderText_Solid(font, text.c_str(), color);
+    texture = SDL_CreateTextureFromSurface(renderer, surf);
+    rect = {x, y, surf->w + 20, surf->h + 10};
+    SDL_FreeSurface(surf);
+}
+
+void Button::render(SDL_Renderer* renderer) {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(renderer, &rect);
+    renderText(text, rect.x + 10, rect.y + 5);
+}
+
+void Button::handleEvent(SDL_Event* e) {
+    if (e->type == SDL_MOUSEBUTTONDOWN) {
+        int x = e->button.x;
+        int y = e->button.y;
+        if (x > rect.x && x < rect.x + rect.w && y > rect.y && y < rect.y + rect.h) {
+            onClick();
+        }
     }
 }
-SDL_Texture* loadTexture(const char* path, SDL_Renderer* renderer)
-{
-    SDL_Surface* surface = IMG_Load(path);
-    if (!surface)
-    {
-        cout << "Không load được ảnh (" << path << "): " << IMG_GetError() << endl;
-        return nullptr;
-    }
-    SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
-    return tex;
+
+void Button::destroy() {
+    SDL_DestroyTexture(texture);
 }
-void close(SDL_Window* window, SDL_Renderer* renderer, vector<SDL_Texture*>& numTex)
-{
-    for (auto tex : numTex)
-    {
-        SDL_DestroyTexture(tex);
+
+void renderMenu() {
+    startBtn = new Button("Start", 250, 300, font, white, []() {
+        board = new Board(4);
+        board->shuffle();
+    });
+
+    bool quit = false;
+    SDL_Event e;
+    while (!quit && board == nullptr) {
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT) quit = true;
+            startBtn->handleEvent(&e);
+        }
+        SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
+        SDL_RenderClear(renderer);
+        startBtn->render(renderer);
+        SDL_RenderPresent(renderer);
     }
+}
+
+void renderGame() {
+    SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
+    SDL_RenderClear(renderer);
+
+    renderText("Trò chơi xếp số", SCREEN_WIDTH / 2 - 80, 20);
+
+    // Vị trí mới cho nút Restart (trên bảng)
+    SDL_Rect restartRect = {SCREEN_WIDTH / 2 - 120, 100, 32, 32};
+    SDL_RenderCopy(renderer, restartTexture, nullptr, &restartRect);
+
+    // Vị trí mới cho nút Settings (góc trên bên phải)
+    SDL_Rect settingsRect = {SCREEN_WIDTH - 50, 20, 32, 32};
+    SDL_RenderCopy(renderer, settingsTexture, nullptr, &settingsRect);
+
+    // Vị trí mới cho nút Luật chơi (góc trái giữa)
+    Button lawButton("Luật chơi", 20, SCREEN_HEIGHT / 2 - 20, font, white, []() {
+        // Xử lý sự kiện khi click vào nút Luật chơi
+    });
+    lawButton.render(renderer);
+
+    if (board != nullptr) {
+        board->render(renderer);
+
+        Uint32 currentTime = SDL_GetTicks();
+        float seconds = (currentTime - startTime) / 1000.0f;
+        int minutes = (int)seconds / 60;
+        int remainingSeconds = (int)seconds % 60;
+
+        stringstream timeStream;
+        timeStream << (minutes < 10 ? "0" : "") << minutes << ":" << (remainingSeconds < 10 ? "0" : "") << remainingSeconds;
+
+        // Vị trí mới cho thông tin Thời gian (góc trái giữa)
+        renderText("Thời gian", 20, SCREEN_HEIGHT / 2 + 20);
+        renderText(timeStream.str(), 20, SCREEN_HEIGHT / 2 + 50);
+
+        // Vị trí mới cho thông tin Số lượt (góc trái giữa)
+        renderText("Số lượt", 20, SCREEN_HEIGHT / 2 + 90);
+        renderText(to_string(stepCount), 20, SCREEN_HEIGHT / 2 + 120);
+
+        if (board->isWin()) {
+            renderText("Bạn đã thắng!", SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2);
+        }
+    }
+
+    SDL_RenderPresent(renderer);
+}
+
+void init() {
+    SDL_Init(SDL_INIT_VIDEO);
+    TTF_Init();
+    IMG_Init(IMG_INIT_PNG);
+    window = SDL_CreateWindow("Number Puzzle", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    font = TTF_OpenFont("fonts/FreeSans.ttf", 24);
+
+    restartTexture = IMG_LoadTexture(renderer, "img/random.png");
+    settingsTexture = IMG_LoadTexture(renderer, "img/setting.png");
+}
+
+void close() {
+    if (board) delete board;
+    if (startBtn) startBtn->destroy();
+    if (settingBtn) settingBtn->destroy();
+    if (restartTexture) SDL_DestroyTexture(restartTexture);
+    if (settingsTexture) SDL_DestroyTexture(settingsTexture);
+    TTF_CloseFont(font);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     IMG_Quit();
+    TTF_Quit();
     SDL_Quit();
-}
-bool init(SDL_Window*& window, SDL_Renderer*& renderer)
-{
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        cout << "SDL init thất bại: " << SDL_GetError() << endl;
-        return false;
-    }
-    window = SDL_CreateWindow("Game Xếp Hình",
-                              SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED,
-                              SCREEN_WIDTH, SCREEN_HEIGHT,
-                              SDL_WINDOW_SHOWN);
-    if (!window)
-    {
-        cout << "Tạo cửa sổ thất bại: " << SDL_GetError() << endl;
-        return false;
-    }
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (!renderer)
-    {
-        cout << "Tạo renderer thất bại: " << SDL_GetError() << endl;
-        return false;
-    }
-    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
-    {
-        cout << "SDL_image lỗi: " << IMG_GetError() << endl;
-        return false;
-    }
-    return true;
-}
-bool checkWin(const vector<int>& board, int n)
-{
-    for (int i = 0; i < n * n - 1; i++)
-    {
-        if (board[i] != i + 1)
-            return false;
-    }
-    return true;
-}
-bool inven(const vector<int>& v)
-{
-    int count=0,dem=0;
-    for(int i=0; i<v.size(); i++)
-    {
-        if(v[i]==0)
-            dem=1;
-        if(v[i]+dem==i+1)
-            count++;
-    }
-    if(count==v.size())
-        return false;
-    count = 0;
-    int n = sqrt(v.size());
-    int k = 0;
-    for (int i = 0; i < v.size(); i++)
-    {
-        if (v[i] == 0)
-        {
-            k = n - (i / n);
-            continue;
-        }
-        for (int j = i + 1; j < v.size(); j++)
-        {
-            if (v[j] != 0 && v[i] > v[j])
-                count++;
-        }
-    }
-    if (n % 2 != 0)
-        return (count % 2 == 0);
-    else
-        return ((k + count) % 2 != 0);
-}
-void renderGame(SDL_Renderer* renderer, const vector<int>& board, const vector<SDL_Texture*>& numTex, int n, int tileSize, SDL_Texture* bgTexture,SDL_Texture* origil)
-{
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderClear(renderer);
-    if( origil)
-    {
-        SDL_Rect bgRect= {600,Y,200,200};
-        SDL_RenderCopy(renderer, origil, NULL, &bgRect);
-    }
-    if (bgTexture)
-    {
-        SDL_Rect bgRect = {X, Y, 400, 400};
-        SDL_RenderCopy(renderer, bgTexture, NULL, &bgRect);
-    }
-    for (int r  = 0; r < n; r++)
-    {
-        for (int c = 0; c < n; c++)
-        {
-            int num = board[r * n + c];
-            if (num != 0)
-            {
-                SDL_Texture* tex = numTex[num - 1];
-                if (tex)
-                {
-                    SDL_Rect dstRect = {  c * tileSize+X, r * tileSize+Y, tileSize, tileSize };
-                    SDL_RenderCopy(renderer, tex, NULL, &dstRect);
-                }
-            }
-        }
-    }
-    SDL_RenderPresent(renderer);
-}
-void upimg(vector<SDL_Texture*> &numTex,SDL_Renderer *renderer,int n)
-{
-    for (int i = 1; i <= n * n; i++)
-    {
-        string path = "image/"+to_string(n)+"/img-" + to_string(i) + ".png";
-        SDL_Texture* tex = loadTexture(path.c_str(), renderer);
-        numTex.push_back(tex);
-    }
 }
