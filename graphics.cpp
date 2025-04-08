@@ -2,6 +2,7 @@
 #include "graphics.h"
 #include <sstream>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 
 using namespace std;
 
@@ -18,7 +19,7 @@ void drawGrid(SDL_Renderer* renderer, vector<SDL_Texture*>& textures, int arr[])
         SDL_RenderDrawLine(renderer, startX, startY + i * TILE_SIZE, startX + boardWidth, startY + i * TILE_SIZE);
     }
 
-    for (int j = 0; j <= GRID_SIZE; ++j) // Vẽ đường kẻ dọc
+    for (int j = 0; j <= GRID_SIZE; ++j)
     {
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderDrawLine(renderer, startX + j * TILE_SIZE, startY, startX + j * TILE_SIZE, startY + boardHeight);
@@ -31,15 +32,14 @@ void drawGrid(SDL_Renderer* renderer, vector<SDL_Texture*>& textures, int arr[])
             int val = arr[i * GRID_SIZE + j];
             if (val != 0)
             {
-                int padding =1;
-                SDL_Rect imageRect ={startX + j * TILE_SIZE + padding,startY + i * TILE_SIZE + padding,TILE_SIZE - 2 * padding,TILE_SIZE - 2 * padding};
+                int padding = 1;
+                SDL_Rect imageRect = {startX + j * TILE_SIZE + padding, startY + i * TILE_SIZE + padding, TILE_SIZE - 2 * padding, TILE_SIZE - 2 * padding};
                 SDL_RenderCopy(renderer, textures[val - 1], NULL, &imageRect);
-
             }
         }
     }
-
 }
+
 void drawButton(SDL_Renderer* renderer, TTF_Font* font, int x, int y, int width, int height, const char* text)
 {
     SDL_Rect rect = {x, y, width, height};
@@ -62,6 +62,24 @@ void drawText(SDL_Renderer* renderer, TTF_Font* font, const char* text, int x, i
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
 }
+Mix_Chunk* loadMixer(const char* filepath)
+{
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+    {
+        SDL_Log("SDL_mixer could not initialize! SDL_mixer Error: %s", Mix_GetError());
+        return nullptr;
+    }
+
+    Mix_Chunk* sound = Mix_LoadWAV(filepath);
+    if (!sound)
+    {
+        SDL_Log("Failed to load sound file (%s)! SDL_mixer Error: %s", filepath, Mix_GetError());
+        return nullptr;
+    }
+
+    Mix_VolumeChunk(sound, MIX_MAX_VOLUME);
+    return sound;
+}
 
 SDL_Texture* loadImage(SDL_Renderer* renderer, const char* filePath)
 {
@@ -78,19 +96,18 @@ SDL_Texture* loadImage(SDL_Renderer* renderer, const char* filePath)
 
 void destroy(SDL_Window* window, SDL_Renderer* renderer, TTF_Font* font, std::vector<SDL_Texture*> textures, SDL_Texture* setting_texture)
 {
-    for (SDL_Texture* texture : textures)
-    {
-        SDL_DestroyTexture(texture);
-    }
+    for (auto tex : textures)
+        SDL_DestroyTexture(tex);
     SDL_DestroyTexture(setting_texture);
     TTF_CloseFont(font);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    IMG_Quit();
     TTF_Quit();
+    IMG_Quit();
     SDL_Quit();
 }
-void drawImageButton(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, int width, int height)
+
+void drawSetting(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, int width, int height)
 {
     SDL_Rect rect = {x, y, width, height};
     SDL_RenderCopy(renderer, texture, NULL, &rect);
