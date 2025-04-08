@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1744129785 source:d:\c++\demo\main.cpp
+1744133795 source:d:\c++\demo\main.cpp
 	<SDL.h>
 	<SDL_ttf.h>
 	"defs.h"

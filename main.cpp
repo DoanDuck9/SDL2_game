@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
     vector<SDL_Texture*> textures;
     for (int i = 1; i <= 15; ++i)
     {
-        string ss = "img/" + to_string(i) + ".png";
+        string ss = "img/" + to_string(i) + " (1).png";
         SDL_Texture* texture = loadImage(renderer, ss.c_str());
         textures.push_back(texture);
     }
