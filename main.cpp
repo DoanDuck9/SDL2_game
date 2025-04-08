@@ -112,7 +112,7 @@ int main(int argc, char* argv[])
         else if (currentGameState == STATE_PLAYING)
         {
             drawGrid(renderer, textures, arr);
-            drawImageButton(renderer, setting_texture, SCREEN_WIDTH - 60, 10, 50, 30);
+            drawImageButton(renderer, setting_texture, SCREEN_WIDTH - 50, 10, 40, 30);
             string s = "";
             s = "Time: " + to_string((SDL_GetTicks() - startTime) / 1000) + "s";
             drawText(renderer, font, s.c_str(), 10, 10, {255, 255, 255});

@@ -7,14 +7,12 @@ using namespace std;
 
 void shuffleGrid(int arr[])
 {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    // Kiểm tra xem rd có thực sự ngẫu nhiên hay không
+    random_device rd;
+    mt19937 gen(rd());
     if (rd.entropy() == 0.0) {
-        // rd không ngẫu nhiên, sử dụng seed từ time(0)
         gen.seed(time(0));
     }
-    std::shuffle(arr, arr + GRID_SIZE * GRID_SIZE, gen);
+    shuffle(arr, arr + GRID_SIZE * GRID_SIZE, gen);
 }
 bool isGameOver(int arr[])
 {
