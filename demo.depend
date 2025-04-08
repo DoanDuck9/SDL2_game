@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1744028165 source:d:\c++\demo\main.cpp
+1744079711 source:d:\c++\demo\main.cpp
 	<SDL.h>
 	<SDL_ttf.h>
 	"defs.h"
@@ -8,27 +8,29 @@
 	<sstream>
 	<SDL_image.h>
 	<vector>
+	<ctime>
 
 1744027235 d:\c++\demo\defs.h
 	<SDL.h>
 	<SDL_ttf.h>
 
-1744027248 source:d:\c++\demo\graphics.cpp
+1744078949 source:d:\c++\demo\graphics.cpp
 	"defs.h"
 	"graphics.h"
 	<sstream>
 	<SDL_image.h>
 
-1744027244 d:\c++\demo\graphics.h
+1744078949 d:\c++\demo\graphics.h
 	<SDL.h>
 	<SDL_ttf.h>
 	<vector>
 
-1744027225 source:d:\c++\demo\board.cpp
+1744078648 source:d:\c++\demo\board.cpp
 	"defs.h"
 	"board.h"
 	<random>
 	<algorithm>
+	<ctime>
 
-1744027225 d:\c++\demo\board.h
+1744074256 d:\c++\demo\board.h
 
