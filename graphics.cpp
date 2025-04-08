@@ -65,17 +65,24 @@ SDL_Texture* loadImage(SDL_Renderer* renderer, const char* filePath)
     SDL_FreeSurface(surface);
     return texture;
 }
-void destroy(SDL_Window* window, SDL_Renderer* renderer, TTF_Font* font, SDL_Texture* rules_texture, std::vector<SDL_Texture*> textures)
+
+void destroy(SDL_Window* window, SDL_Renderer* renderer, TTF_Font* font, std::vector<SDL_Texture*> textures, SDL_Texture* setting_texture)
 {
     for (SDL_Texture* texture : textures)
     {
         SDL_DestroyTexture(texture);
     }
-    SDL_DestroyTexture(rules_texture);
+    SDL_DestroyTexture(setting_texture);
     TTF_CloseFont(font);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     IMG_Quit();
     TTF_Quit();
     SDL_Quit();
+}
+
+void drawImageButton(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, int width, int height)
+{
+    SDL_Rect rect = {x, y, width, height};
+    SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
