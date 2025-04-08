@@ -23,14 +23,14 @@ int main(int argc, char* argv[])
 
     window = SDL_CreateWindow("Sliding Puzzle", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    font = TTF_OpenFont("fonts/arial.ttf", 28);
+    font = TTF_OpenFont("fonts/arial.ttf", 25);
     SDL_Texture* setting_texture = loadImage(renderer, "img/setting.png");
     int arr[GRID_SIZE * GRID_SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0};
     //shuffleGrid(arr);
     vector<SDL_Texture*> textures;
     for (int i = 1; i <= 15; ++i)
     {
-        string ss = "img/num_" + to_string(i) + ".png";
+        string ss = "img/" + to_string(i) + ".png";
         SDL_Texture* texture = loadImage(renderer, ss.c_str());
         textures.push_back(texture);
     }
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
                     int boardHeight = GRID_SIZE * TILE_SIZE;
                     int startX = (SCREEN_WIDTH - boardWidth) / 2;
                     int startY = (SCREEN_HEIGHT - boardHeight) / 2;
-                    if (mouse_x >= SCREEN_WIDTH - 120 && mouse_x <= SCREEN_WIDTH - 20 && mouse_y >= 10 && mouse_y <= 60)
+                    if (mouse_x >= SCREEN_WIDTH - 40 && mouse_x <= SCREEN_WIDTH - 10 && mouse_y >= 10 && mouse_y <= 40)
                     {
                         currentGameState = STATE_SETTINGS;
                     }
@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
                 }
             }
         }
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
         SDL_RenderClear(renderer);
         if (currentGameState == STATE_START)
         {
@@ -112,7 +112,7 @@ int main(int argc, char* argv[])
         else if (currentGameState == STATE_PLAYING)
         {
             drawGrid(renderer, textures, arr);
-            drawImageButton(renderer, setting_texture, SCREEN_WIDTH - 50, 10, 40, 30);
+            drawImageButton(renderer, setting_texture, SCREEN_WIDTH - 40, 10, 30, 30);
             string s = "";
             s = "Time: " + to_string((SDL_GetTicks() - startTime) / 1000) + "s";
             drawText(renderer, font, s.c_str(), 10, 10, {255, 255, 255});

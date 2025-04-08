@@ -12,24 +12,34 @@ void drawGrid(SDL_Renderer* renderer, vector<SDL_Texture*>& textures, int arr[])
     int startX = (SCREEN_WIDTH - boardWidth) / 2;
     int startY = (SCREEN_HEIGHT - boardHeight) / 2;
 
+    for (int i = 0; i <= GRID_SIZE; ++i)
+    {
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderDrawLine(renderer, startX, startY + i * TILE_SIZE, startX + boardWidth, startY + i * TILE_SIZE);
+    }
+
+    for (int j = 0; j <= GRID_SIZE; ++j) // Vẽ đường kẻ dọc
+    {
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderDrawLine(renderer, startX + j * TILE_SIZE, startY, startX + j * TILE_SIZE, startY + boardHeight);
+    }
+
     for (int i = 0; i < GRID_SIZE; ++i)
     {
         for (int j = 0; j < GRID_SIZE; ++j)
         {
-            SDL_Rect rect = {startX + j * TILE_SIZE, startY + i * TILE_SIZE, TILE_SIZE, TILE_SIZE};
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            SDL_RenderFillRect(renderer, &rect);
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-            SDL_RenderDrawRect(renderer, &rect);
-
-            if (arr[i * GRID_SIZE + j] != 0)
+            int val = arr[i * GRID_SIZE + j];
+            if (val != 0)
             {
-                SDL_RenderCopy(renderer, textures[arr[i * GRID_SIZE + j] - 1], NULL, &rect);
+                int padding =1;
+                SDL_Rect imageRect ={startX + j * TILE_SIZE + padding,startY + i * TILE_SIZE + padding,TILE_SIZE - 2 * padding,TILE_SIZE - 2 * padding};
+                SDL_RenderCopy(renderer, textures[val - 1], NULL, &imageRect);
+
             }
         }
     }
-}
 
+}
 void drawButton(SDL_Renderer* renderer, TTF_Font* font, int x, int y, int width, int height, const char* text)
 {
     SDL_Rect rect = {x, y, width, height};
@@ -80,7 +90,6 @@ void destroy(SDL_Window* window, SDL_Renderer* renderer, TTF_Font* font, std::ve
     TTF_Quit();
     SDL_Quit();
 }
-
 void drawImageButton(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, int width, int height)
 {
     SDL_Rect rect = {x, y, width, height};
