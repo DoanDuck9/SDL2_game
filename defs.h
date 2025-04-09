@@ -13,7 +13,8 @@ enum GameState {
     STATE_START,
     STATE_PLAYING,
     STATE_SETTINGS,
-    STATE_RULES
+    STATE_RULES,
+    STATE_OVER
 };
 
 #endif

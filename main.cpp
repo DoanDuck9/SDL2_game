@@ -10,7 +10,6 @@
 #include <sstream>
 #include <ctime>
 using namespace std;
-
 int main(int argc, char* argv[])
 {
     SDL_Window* window;
@@ -28,7 +27,6 @@ int main(int argc, char* argv[])
     window = SDL_CreateWindow("Puzzle Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     font = TTF_OpenFont("fonts/arial.ttf", 24);
-
     SDL_Texture* setting_texture = loadImage(renderer, "img/setting.png");
     Mix_Chunk* moveSound = Mix_LoadWAV("sound/move.wav");
     Mix_Chunk* kickSound = Mix_LoadWAV("sound/kick.wav");
@@ -45,7 +43,6 @@ int main(int argc, char* argv[])
         SDL_Texture* texture = loadImage(renderer, ss.c_str());
         textures.push_back(texture);
     }
-
     SDL_Event e;
     bool quit = false;
     while (!quit)
@@ -100,6 +97,8 @@ int main(int argc, char* argv[])
                         if (check<moves)
                             Mix_PlayChannel(-1, moveSound, 0);
                     }
+                    if(isGameOver(arr))
+                        currentGameState=STATE_OVER;
                 }
                 else if (currentGameState == STATE_SETTINGS)
                 {
@@ -115,9 +114,27 @@ int main(int argc, char* argv[])
                         quit = true;
                     }
                 }
+                else if(currentGameState== STATE_OVER)
+                {
+                    int playAgainButtonWidth = 120;
+                    int playAgainButtonHeight = 50;
+                    int playAgainButtonX = (SCREEN_WIDTH - playAgainButtonWidth) / 2;
+                    int playAgainButtonY = 300;
+                    if (mouse_x >= playAgainButtonX && mouse_x <= playAgainButtonX + playAgainButtonWidth && mouse_y >= playAgainButtonY && mouse_y <= playAgainButtonY + playAgainButtonHeight)
+                    {
+                        if (startSound) Mix_PlayChannel(-1, startSound, 0);
+                        currentGameState = STATE_PLAYING;
+                        shuffleGrid(arr);
+                        while (!isSolvable(arr))
+                        {
+                            shuffleGrid(arr);
+                        }
+                        startTime = SDL_GetTicks();
+                        moves = 0;
+                    }
+                }
             }
         }
-
         SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
         SDL_RenderClear(renderer);
         if (currentGameState == STATE_START)
@@ -139,28 +156,17 @@ int main(int argc, char* argv[])
             if (isGameOver(arr))
             {
                 if (winSound) Mix_PlayChannel(-1, winSound, 0);
-                drawText(renderer, font, "You Win!", 200, 200, {255, 255, 255});
+                SDL_SetRenderDrawColor(renderer,0,0,0,255);
+                SDL_RenderClear(renderer);
+                TTF_Font* bigfont = TTF_OpenFont("fonts/arial.ttf", 30);
+                drawText(renderer, bigfont, "You Win!", 340, 200, {255, 255, 255});
+                    TTF_CloseFont(bigfont);
+
                 int playAgainButtonWidth = 120;
                 int playAgainButtonHeight = 50;
                 int playAgainButtonX = (SCREEN_WIDTH - playAgainButtonWidth) / 2;
                 int playAgainButtonY = 300;
                 drawButton(renderer, font, playAgainButtonX, playAgainButtonY, playAgainButtonWidth, playAgainButtonHeight, "Play Again");
-                if (e.type == SDL_MOUSEBUTTONDOWN)
-                {
-                    int mouse_x, mouse_y;
-                    SDL_GetMouseState(&mouse_x, &mouse_y);
-                    if (mouse_x >= playAgainButtonX && mouse_x <= playAgainButtonX + playAgainButtonWidth && mouse_y >= playAgainButtonY && mouse_y <= playAgainButtonY + playAgainButtonHeight)
-                    {
-                        if (startSound) Mix_PlayChannel(-1, startSound, 0);
-                        shuffleGrid(arr);
-                        while (!isSolvable(arr))
-                        {
-                            shuffleGrid(arr);
-                        }
-                        startTime = SDL_GetTicks();
-                        moves = 0;
-                    }
-                }
             }
         }
         else if (currentGameState == STATE_SETTINGS)
@@ -169,10 +175,8 @@ int main(int argc, char* argv[])
             drawButton(renderer, font, (SCREEN_WIDTH - 120) / 2, start_y, 120, 50, "Continue");
             drawButton(renderer, font, (SCREEN_WIDTH - 120) / 2, start_y + 60, 120, 50, "Exit");
         }
-
         SDL_RenderPresent(renderer);
     }
-
     destroy(window, renderer, font, textures,setting_texture);
     Mix_FreeChunk(moveSound);
     Mix_FreeChunk(kickSound);

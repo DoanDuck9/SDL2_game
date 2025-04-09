@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1744168714 source:d:\c++\demo\main.cpp
+1744199196 source:d:\c++\demo\main.cpp
 	<SDL.h>
 	<SDL_ttf.h>
 	<SDL_image.h>
@@ -12,11 +12,11 @@
 	<sstream>
 	<ctime>
 
-1744141623 d:\c++\demo\defs.h
+1744171868 d:\c++\demo\defs.h
 	<SDL.h>
 	<SDL_ttf.h>
 
-1744141623 source:d:\c++\demo\graphics.cpp
+1744199196 source:d:\c++\demo\graphics.cpp
 	"defs.h"
 	"graphics.h"
 	<sstream>

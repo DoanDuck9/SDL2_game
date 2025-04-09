@@ -20,8 +20,6 @@ void drawGrid(SDL_Renderer* renderer, vector<SDL_Texture*>& textures, int arr[])
         SDL_RenderDrawLine(renderer, startX, startY + i * TILE_SIZE, startX + boardWidth, startY + i * TILE_SIZE);
         SDL_RenderDrawLine(renderer, startX, startY + i * TILE_SIZE-1, startX + boardWidth, startY + i * TILE_SIZE-1);
         SDL_RenderDrawLine(renderer, startX, startY + i * TILE_SIZE+1, startX + boardWidth, startY + i * TILE_SIZE+1);
-
-
     }
 
     for (int j = 0; j <= GRID_SIZE; ++j)
@@ -30,7 +28,6 @@ void drawGrid(SDL_Renderer* renderer, vector<SDL_Texture*>& textures, int arr[])
         SDL_RenderDrawLine(renderer, startX + j * TILE_SIZE, startY, startX + j * TILE_SIZE, startY + boardHeight);
         SDL_RenderDrawLine(renderer, startX + j * TILE_SIZE+1, startY, startX + j * TILE_SIZE+1, startY + boardHeight);
         SDL_RenderDrawLine(renderer, startX + j * TILE_SIZE-1, startY, startX + j * TILE_SIZE-1, startY + boardHeight);
-
     }
 
     for (int i = 0; i < GRID_SIZE; ++i)
@@ -60,7 +57,6 @@ void drawButton(SDL_Renderer* renderer, TTF_Font* font, int x, int y, int width,
     TTF_SizeText(font, text, &textWidth, &textHeight);
     drawText(renderer, font, text, x + (width - textWidth) / 2, y + (height - textHeight) / 2, {255, 255, 255});
 }
-
 void drawText(SDL_Renderer* renderer, TTF_Font* font, const char* text, int x, int y, SDL_Color color)
 {
     SDL_Surface* surface = TTF_RenderText_Solid(font, text, color);
