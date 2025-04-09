@@ -16,13 +16,21 @@ void drawGrid(SDL_Renderer* renderer, vector<SDL_Texture*>& textures, int arr[])
     for (int i = 0; i <= GRID_SIZE; ++i)
     {
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
         SDL_RenderDrawLine(renderer, startX, startY + i * TILE_SIZE, startX + boardWidth, startY + i * TILE_SIZE);
+        SDL_RenderDrawLine(renderer, startX, startY + i * TILE_SIZE-1, startX + boardWidth, startY + i * TILE_SIZE-1);
+        SDL_RenderDrawLine(renderer, startX, startY + i * TILE_SIZE+1, startX + boardWidth, startY + i * TILE_SIZE+1);
+
+
     }
 
     for (int j = 0; j <= GRID_SIZE; ++j)
     {
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderDrawLine(renderer, startX + j * TILE_SIZE, startY, startX + j * TILE_SIZE, startY + boardHeight);
+        SDL_RenderDrawLine(renderer, startX + j * TILE_SIZE+1, startY, startX + j * TILE_SIZE+1, startY + boardHeight);
+        SDL_RenderDrawLine(renderer, startX + j * TILE_SIZE-1, startY, startX + j * TILE_SIZE-1, startY + boardHeight);
+
     }
 
     for (int i = 0; i < GRID_SIZE; ++i)

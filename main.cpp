@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
     IMG_Init(IMG_INIT_PNG);
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
-    window = SDL_CreateWindow("15 Puzzle Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Puzzle Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     font = TTF_OpenFont("fonts/arial.ttf", 24);
 
@@ -34,23 +34,20 @@ int main(int argc, char* argv[])
     Mix_Chunk* kickSound = Mix_LoadWAV("sound/kick.wav");
     Mix_Chunk* startSound = Mix_LoadWAV("sound/start.wav");
     Mix_Chunk* winSound = Mix_LoadWAV("sound/win.wav");
-
     int arr[GRID_SIZE * GRID_SIZE];
     for (int i = 0; i < GRID_SIZE * GRID_SIZE - 1; ++i)
         arr[i] = i + 1;
     arr[GRID_SIZE * GRID_SIZE - 1] = 0;
-
     vector<SDL_Texture*> textures;
     for (int i = 1; i <= GRID_SIZE * GRID_SIZE - 1; ++i)
     {
-        string ss = "img/" + to_string(i) + " (1).png";
+        string ss = "img/" + to_string(i) + ".png";
         SDL_Texture* texture = loadImage(renderer, ss.c_str());
         textures.push_back(texture);
     }
 
     SDL_Event e;
     bool quit = false;
-
     while (!quit)
     {
         while (SDL_PollEvent(&e) != 0)
@@ -123,7 +120,6 @@ int main(int argc, char* argv[])
 
         SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
         SDL_RenderClear(renderer);
-
         if (currentGameState == STATE_START)
         {
             int buttonWidth = 100;
