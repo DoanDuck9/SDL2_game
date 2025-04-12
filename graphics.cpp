@@ -98,19 +98,6 @@ SDL_Texture* loadImage(SDL_Renderer* renderer, const char* filePath)
     return texture;
 }
 
-void destroy(SDL_Window* window, SDL_Renderer* renderer, TTF_Font* font, std::vector<SDL_Texture*> textures, SDL_Texture* setting_texture)
-{
-    for (auto tex : textures)
-        SDL_DestroyTexture(tex);
-    SDL_DestroyTexture(setting_texture);
-    TTF_CloseFont(font);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    TTF_Quit();
-    IMG_Quit();
-    SDL_Quit();
-}
-
 void drawSetting(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, int width, int height)
 {
     SDL_Rect rect = {x, y, width, height};

@@ -1,29 +1,19 @@
 # depslib dependency file v1.0
-1744472699 source:d:\c++\demo\main.cpp
-	<SDL.h>
-	<SDL_ttf.h>
-	<SDL_image.h>
-	<SDL_mixer.h>
-	"defs.h"
-	"graphics.h"
-	"board.h"
-	<vector>
-	<string>
-	<sstream>
-	<ctime>
+1744479795 source:d:\c++\demo\main.cpp
+	"Game.h"
 
 1744171868 d:\c++\demo\defs.h
 	<SDL.h>
 	<SDL_ttf.h>
 
-1744199196 source:d:\c++\demo\graphics.cpp
+1744478837 source:d:\c++\demo\graphics.cpp
 	"defs.h"
 	"graphics.h"
 	<sstream>
 	<SDL_image.h>
 	<SDL_mixer.h>
 
-1744141623 d:\c++\demo\graphics.h
+1744478837 d:\c++\demo\graphics.h
 	<SDL.h>
 	<SDL_mixer.h>
 	<SDL_ttf.h>
@@ -37,4 +27,21 @@
 	<ctime>
 
 1744141623 d:\c++\demo\board.h
+
+1744477797 source:d:\c++\demo\game.cpp
+	"Game.h"
+	"graphics.h"
+	"board.h"
+	<ctime>
+	<sstream>
+
+1744479872 d:\c++\demo\game.h
+	<SDL.h>
+	<SDL_ttf.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<vector>
+	<string>
+	"defs.h"
+	"board.h"
 
