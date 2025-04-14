@@ -11,5 +11,6 @@ void drawText(SDL_Renderer* renderer, TTF_Font* font, const char* text, int x, i
 SDL_Texture* loadImage(SDL_Renderer* renderer, const char* filePath);
 void drawSetting(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, int width, int height);
 Mix_Chunk* loadMixer(const char* filepath);
+bool isMouseOver(int x, int y, int w, int h);
 
 #endif

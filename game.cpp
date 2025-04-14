@@ -47,6 +47,7 @@ void Game::run()
 }
 void Game::handleEvent(SDL_Event& e)
 {
+
     if (e.type == SDL_QUIT) quit = true;
     if (e.type == SDL_MOUSEBUTTONDOWN)
     {
@@ -243,7 +244,7 @@ void Game::render()
         drawText(renderer, font, s.c_str(), 10, 10, {255, 255, 255});
         s = "Moves: " + to_string(moves);
         drawText(renderer, font, s.c_str(), 10, 40, {255, 255, 255});
-        drawButton(renderer,font,10,150,100,50,"Random");
+        drawButton(renderer,font,30,160,80,40,"Reset");
     }
     else if(state==STATE_OVER)
     {

@@ -25,12 +25,11 @@ struct Game
     GameState state = STATE_START;
     int GRID_SIZE=4;
     vector<int> arr;
-    //int arr[GRID_SIZE * GRID_SIZE];
     int moves = 0;
     int now = 0;
     int startTime = 0,startSetting=0;
-
     bool quit = false;
+    bool isPressed = false;
 
     void init();
     void run();

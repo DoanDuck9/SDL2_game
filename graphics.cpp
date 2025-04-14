@@ -47,8 +47,17 @@ void drawGrid(SDL_Renderer* renderer, vector<SDL_Texture*>& textures,vector<int>
 
 void drawButton(SDL_Renderer* renderer, TTF_Font* font, int x, int y, int width, int height, const char* text)
 {
+    SDL_Rect shadowRect = {x - 4, y - 4, width, height};
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 100); // Màu đen mờ (alpha = 100)
+    SDL_RenderFillRect(renderer, &shadowRect);
     SDL_Rect rect = {x, y, width, height};
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+//    if (isPressed)
+  //      SDL_SetRenderDrawColor(renderer, 30, 30, 30, 255); // Màu tối hơn khi nhấn
+   // else
+        if (isMouseOver(x, y, width, height))
+        SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255); // Màu hover
+    else
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Mặc định
     SDL_RenderFillRect(renderer, &rect);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(renderer, &rect);
@@ -102,4 +111,10 @@ void drawSetting(SDL_Renderer* renderer, SDL_Texture* texture, int x, int y, int
 {
     SDL_Rect rect = {x, y, width, height};
     SDL_RenderCopy(renderer, texture, NULL, &rect);
+}
+bool isMouseOver(int x, int y, int w, int h)
+{
+    int mx, my;
+    SDL_GetMouseState(&mx, &my);
+    return (mx >= x && mx <= x + w && my >= y && my <= y + h);
 }
