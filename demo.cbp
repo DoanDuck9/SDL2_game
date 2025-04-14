@@ -34,10 +34,9 @@
 		</Compiler>
 		<Unit filename="board.cpp" />
 		<Unit filename="board.h" />
-		<Unit filename="defs.cpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
 		<Unit filename="defs.h" />
+		<Unit filename="game.cpp" />
+		<Unit filename="game.h" />
 		<Unit filename="graphics.cpp" />
 		<Unit filename="graphics.h" />
 		<Unit filename="main.cpp" />

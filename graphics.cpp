@@ -3,10 +3,10 @@
 #include <sstream>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
-
+#include<vector>
 using namespace std;
 
-void drawGrid(SDL_Renderer* renderer, vector<SDL_Texture*>& textures, int arr[])
+void drawGrid(SDL_Renderer* renderer, vector<SDL_Texture*>& textures,vector<int> arr,int GRID_SIZE)
 {
     int boardWidth = GRID_SIZE * TILE_SIZE;
     int boardHeight = GRID_SIZE * TILE_SIZE;

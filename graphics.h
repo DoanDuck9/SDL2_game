@@ -5,7 +5,7 @@
 #include <SDL_ttf.h>
 #include <vector>
 using namespace std;
-void drawGrid(SDL_Renderer* renderer, vector<SDL_Texture*>& textures, int arr[]);
+void drawGrid(SDL_Renderer* renderer, vector<SDL_Texture*>& textures,vector<int>arr,int GRID_SIZE);
 void drawButton(SDL_Renderer* renderer, TTF_Font* font, int x, int y, int width, int height, const char* text);
 void drawText(SDL_Renderer* renderer, TTF_Font* font, const char* text, int x, int y, SDL_Color color);
 SDL_Texture* loadImage(SDL_Renderer* renderer, const char* filePath);

@@ -5,16 +5,16 @@
 #include<ctime>
 using namespace std;
 
-void shuffleGrid(int arr[])
+void shuffleGrid(vector<int> &arr)
 {
     random_device rd;
     mt19937 gen(rd());
     if (rd.entropy() == 0.0) {
         gen.seed(time(0));
     }
-    shuffle(arr, arr + GRID_SIZE * GRID_SIZE, gen);
+    shuffle(arr.begin(), arr.end(), gen);
 }
-bool isGameOver(int arr[])
+bool isGameOver(vector <int> arr,int GRID_SIZE)
 {
     int count = 1;
     for (int i = 0; i < GRID_SIZE * GRID_SIZE - 1; ++i)
@@ -28,7 +28,7 @@ bool isGameOver(int arr[])
     return true;
 }
 
-void moveTile(int arr[], int tile_x, int tile_y, int& moves)
+void moveTile(vector<int> &arr, int tile_x, int tile_y, int& moves,int GRID_SIZE)
 {
     int index = tile_x * GRID_SIZE + tile_y;
     int index0 = -1;
@@ -88,7 +88,7 @@ void moveTile(int arr[], int tile_x, int tile_y, int& moves)
     }
 }
 
-bool isSolvable(int arr[])
+bool isSolvable(vector<int> arr, int GRID_SIZE)
 {
     int inv_count = 0;
     for (int i = 0; i < GRID_SIZE * GRID_SIZE - 1; ++i)
@@ -102,9 +102,7 @@ bool isSolvable(int arr[])
         }
     }
     if (GRID_SIZE % 2 == 1)
-    {
         return (inv_count % 2 == 0);
-    }
     else
     {
         int zero_row;

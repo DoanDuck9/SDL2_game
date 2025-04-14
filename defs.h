@@ -6,15 +6,15 @@
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
-const int TILE_SIZE = 120;
-const int GRID_SIZE = 4;
+const int TILE_SIZE = 100;
 
 enum GameState {
     STATE_START,
     STATE_PLAYING,
     STATE_SETTINGS,
     STATE_RULES,
-    STATE_OVER
+    STATE_OVER,
+    STATE_LEVEL
 };
 
 #endif

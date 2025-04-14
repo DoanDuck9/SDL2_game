@@ -1,4 +1,3 @@
-// Game.h
 #pragma once
 #include <SDL.h>
 #include <SDL_ttf.h>
@@ -24,10 +23,12 @@ struct Game
     Mix_Chunk* menuSound = nullptr;
 
     GameState state = STATE_START;
-    int arr[GRID_SIZE * GRID_SIZE];
+    int GRID_SIZE=4;
+    vector<int> arr;
+    //int arr[GRID_SIZE * GRID_SIZE];
     int moves = 0;
     int now = 0;
-    int startTime = 0;
+    int startTime = 0,startSetting=0;
 
     bool quit = false;
 
@@ -38,6 +39,7 @@ struct Game
     void handlePlayingClick(int x,int y);
     void handleSettingsClick(int x,int y);
     void handleGameOverClick(int x,int y);
+    void handleLevelClick(int x,int y);
 
     void update();
     void render();
