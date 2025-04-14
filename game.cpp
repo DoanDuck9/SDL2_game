@@ -77,6 +77,7 @@ void Game::handleStartClick(int x,int y)
 {
     if (x >= 300 && x <= 500 && y >= 200 && y <= 250)
     {
+            Mix_FreeChunk(menuSound);
         if (startSound) Mix_PlayChannel(-1, startSound, 0);
         state = STATE_PLAYING;
         now=0;

@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1744480222 source:d:\c++\demo\main.cpp
+1744640847 source:d:\c++\demo\main.cpp
 	"Game.h"
 
-1744633253 d:\c++\demo\defs.h
+1744640847 d:\c++\demo\defs.h
 	<SDL.h>
 	<SDL_ttf.h>
 
-1744639099 source:d:\c++\demo\graphics.cpp
+1744645422 source:d:\c++\demo\graphics.cpp
 	"defs.h"
 	"graphics.h"
 	<sstream>
@@ -14,30 +14,30 @@
 	<SDL_mixer.h>
 	<vector>
 
-1744639968 d:\c++\demo\graphics.h
+1744640847 d:\c++\demo\graphics.h
 	<SDL.h>
 	<SDL_mixer.h>
 	<SDL_ttf.h>
 	<vector>
 
-1744630165 source:d:\c++\demo\board.cpp
+1744640847 source:d:\c++\demo\board.cpp
 	"defs.h"
 	"board.h"
 	<random>
 	<algorithm>
 	<ctime>
 
-1744630165 d:\c++\demo\board.h
+1744640847 d:\c++\demo\board.h
 	<vector>
 
-1744639939 source:d:\c++\demo\game.cpp
+1744640847 source:d:\c++\demo\game.cpp
 	"Game.h"
 	"graphics.h"
 	"board.h"
 	<ctime>
 	<sstream>
 
-1744639099 d:\c++\demo\game.h
+1744640847 d:\c++\demo\game.h
 	<SDL.h>
 	<SDL_ttf.h>
 	<SDL_image.h>

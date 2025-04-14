@@ -48,16 +48,16 @@ void drawGrid(SDL_Renderer* renderer, vector<SDL_Texture*>& textures,vector<int>
 void drawButton(SDL_Renderer* renderer, TTF_Font* font, int x, int y, int width, int height, const char* text)
 {
     SDL_Rect shadowRect = {x - 4, y - 4, width, height};
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 100); // Màu đen mờ (alpha = 100)
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 100);
     SDL_RenderFillRect(renderer, &shadowRect);
     SDL_Rect rect = {x, y, width, height};
 //    if (isPressed)
-  //      SDL_SetRenderDrawColor(renderer, 30, 30, 30, 255); // Màu tối hơn khi nhấn
+  //      SDL_SetRenderDrawColor(renderer, 30, 30, 30, 255);
    // else
         if (isMouseOver(x, y, width, height))
-        SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255); // Màu hover
+        SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
     else
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Mặc định
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderFillRect(renderer, &rect);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(renderer, &rect);
